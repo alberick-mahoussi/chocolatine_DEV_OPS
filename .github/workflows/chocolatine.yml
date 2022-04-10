@@ -51,7 +51,7 @@ jobs:
       steps:
         - uses: actions/checkout@v3
         - id: run_test
-          run: make test_run
+          run: make tests_run
           timeout-minutes: 2
           
     mirrorinh_push:
