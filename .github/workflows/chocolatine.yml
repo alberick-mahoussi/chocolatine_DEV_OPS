@@ -1,0 +1,61 @@
+name: automatisation
+
+on:
+  push:
+    branches-ignore:
+    - ga-ignore-
+  pull_request:
+    branches-ignore:
+    - ga-ignore-
+env:
+      MIRROR_URL: https://github.com/EpitechPromo2026/B-DOP-200-COT-2-1-chocolatine-alberick.mahoussi.git
+      EXECUTABLES: lib/my/libmy.a
+  
+jobs:
+    check_reposistory_cleanliness:
+      name: check_cleanliness
+      runs-on: ubuntu-latest
+      steps:
+        - uses: action/checkout@v3
+        - id: check_reposistory_cleanliness
+          run: |
+            BAD_FILE=($(find. -d \( -name "*#" -o -name "#*" -o -name "*pain_au_chocolat*" -o -name "*.o" -o -name "*.a" -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" -o -name "*.~" -o -path '*/tmp/*' \)))
+            for FILES in $BAD_FILES; do
+            echo "::error file=${FILE#./}, title= Unwanted file detected::${FILE./}"
+            done
+            if [[ -n $BAD_FILES]]
+              then
+                exit 1
+              else
+                echo No unwanted files detected
+              fi
+              
+    verification_of_compilation:
+      needs: [check_reposistory_cleanliness]
+      name: check if file can compile
+      runs-on:  ubuntu-latest
+      container:
+        image: epitechcontent/epitest-docker:latest
+      steps:
+        - uses: actions/checkout@v3
+        - id: check_program_compilation
+          run: make
+          timeout-minutes: 2
+        - run: make clean
+        
+    test_file_working:
+      needs: [verification_of_compilation]
+      name: test run
+      runs-on: ubuntu-latest
+      container:
+        image: epitechcontent/epitest-docker:latest
+      steps:
+        - uses: action/checkout@v3
+        - id: run_test
+          run: make test_run
+          timeout-minutes: 2
+          
+      
+        
+        
+  
