@@ -22,7 +22,6 @@ jobs:
             BAD_FILE=($(find . -type d -name "*#" -o -name "#*" -o -iname "*pain_au_chocolat*" -o -name "*.o" -o -name "*.a" -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" -o -name "*.~" -o -wholename "*/tmp/*" ))
             for FILES in $BAD_FILES; do
             echo "::error file=${FILE#./}, title= Unwanted file detected::${FILE./}"
-            done
             if [[ -n $BAD_FILES]]
               then
                 exit 1
