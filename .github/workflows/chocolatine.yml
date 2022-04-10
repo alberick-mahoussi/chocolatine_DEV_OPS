@@ -16,7 +16,7 @@ jobs:
       name: check_cleanliness
       runs-on: ubuntu-latest
       steps:
-        - uses: action/checkout@v3
+        - uses: actions/checkout@v3
         - id: check_reposistory_cleanliness
           run: |
             BAD_FILE=($(find. -d \( -name "*#" -o -name "#*" -o -name "*pain_au_chocolat*" -o -name "*.o" -o -name "*.a" -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" -o -name "*.~" -o -path '*/tmp/*' \)))
