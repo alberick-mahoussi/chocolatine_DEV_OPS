@@ -19,16 +19,16 @@ jobs:
         - uses: actions/checkout@v3
         - id: check_reposistory_cleanliness
           run: |
-            BAD_FILE=($(find . -path '*/tmp/*' -name "*#" -o -name "#*" -o -iname "*pain_au_chocolat*" -o -name "*.o" -o -name "*.a" -o -name "*~" -o -name "~*" -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" ))
-            for FILES in ${BAD_FILES[#]}; do
-            echo "::error file=${FILE#./}, title= Unwanted file detected::${FILE./}"
-            if [[ -n $BAD_FILES]]
-              then
-                exit 1
-              else
-                echo No unwanted files detected
-              fi
-              
+            r_file=($(find . -path '*/tmp/*' -name "*#" -o -name "#*" -o -iname "*pain_au_chocolat*" -o -name "*.o" -o -name "*.a" -o -name "*~" -o -name "~*" -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" ))
+            for a in ${r_file[@]}; do
+            echo "::error file=$a,line=1,endLine=1,title=Unwanted file detected::$a"; done
+            if [[ -n $r_file ]]
+            then
+              exit 1
+            else
+            echo No unwnanted file detected
+            fi
+            
     verification_of_compilation:
       needs: [check_reposistory_cleanliness]
       name: check if file can compile
