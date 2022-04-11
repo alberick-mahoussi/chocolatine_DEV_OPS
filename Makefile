@@ -34,6 +34,8 @@ $(NAME):	$(OBJ)
 clean :
 	rm -f $(OBJ)
 
+tests_run:
+	gcc -o $(NAME) -lncurses -g3 $(OBJ)
 fclean :clean
 	rm -f $(NAME)
 
