@@ -49,10 +49,25 @@ jobs:
       container:
         image: epitechcontent/epitest-docker:latest
       steps:
-        - uses: action/checkout@v3
+        - uses: actions/checkout@v3
         - id: run_test
-          run: make test_run
+          run: make tests_run
           timeout-minutes: 2
+          
+    mirrorinh_push:
+      needs: [test_file_working]
+      if: ${{ github.event_name == 'push' }}
+      name: "pushing_in_mirror"
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+        - uses: pixta-dev/reposistory-mirroring-action@v1
+          with:
+            target_repo_url:
+              ${{ env.MIRROR_URL }}
+    
           
       
         
